@@ -1,6 +1,5 @@
 package com.geolstudio.apipometera;
 
-import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -26,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int READ_TIMEOUT = 15000;
+    EditText to, subject, body;
+    TextView response, quota;
+    Button btnSend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +36,25 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        final EditText to, subject, body;
+        initValue();
+
+        setListener();
+    }
+
+    public void initValue() {
+
+        //MARK : konek ke UI
         to = findViewById(R.id.to);
         subject = findViewById(R.id.subject);
         body = findViewById(R.id.body);
 
-        final TextView response = findViewById(R.id.response);
-        final TextView quota = findViewById(R.id.quota);
+        response = findViewById(R.id.response);
+        quota = findViewById(R.id.quota);
 
-        Button btnSend = findViewById(R.id.btnSend);
+        btnSend = findViewById(R.id.btnSend);
+    }
+
+    public void setListener() {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
