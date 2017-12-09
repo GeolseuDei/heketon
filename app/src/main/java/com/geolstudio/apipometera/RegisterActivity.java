@@ -365,4 +365,9 @@ public class RegisterActivity extends AppCompatActivity {
             conn.disconnect();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+    }
 }

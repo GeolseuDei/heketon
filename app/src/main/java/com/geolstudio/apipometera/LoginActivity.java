@@ -1,13 +1,34 @@
 package com.geolstudio.apipometera;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
+
+    public static final int CONNECTION_TIMEOUT = 10000;
+    public static final int READ_TIMEOUT = 15000;
 
     EditText etEmail, etPassword;
     Button btnLogin;
@@ -18,6 +39,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         etEmail = findViewById(R.id.et_email_login);
         etPassword = findViewById(R.id.et_password_login);
         btnLogin = findViewById(R.id.btn_login);
@@ -26,15 +50,95 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!etEmail.getText().toString().isEmpty()){
+                    if(!etPassword.getText().toString().isEmpty()){
+                        HttpURLConnection conn = null;
+                        URL url = null;
+                        try {
+                            url = new URL("http://192.168.100.16/heketon/login.php");
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
 
+                        try {
+                            conn = (HttpURLConnection) url.openConnection();
+                            conn.setReadTimeout(READ_TIMEOUT);
+                            conn.setConnectTimeout(CONNECTION_TIMEOUT);
+                            conn.setRequestMethod("POST");
+                            conn.setUseCaches(false);
+
+                            conn.setDoInput(true);
+                            conn.setDoOutput(true);
+
+                            Uri.Builder builder = new Uri.Builder()
+                                    .appendQueryParameter("email", etEmail.getText().toString().trim())
+                                    .appendQueryParameter("password", etPassword.getText().toString().trim());
+                            String query = builder.build().getEncodedQuery();
+
+                            OutputStream os = conn.getOutputStream();
+                            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+                            writer.write(query);
+                            writer.flush();
+                            writer.close();
+                            os.close();
+                            conn.connect();
+
+                            int response_code = conn.getResponseCode();
+
+                            if (response_code == HttpURLConnection.HTTP_OK) {
+
+                                InputStream input = conn.getInputStream();
+                                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                                StringBuilder result = new StringBuilder();
+                                String line;
+
+                                while ((line = reader.readLine()) != null) {
+                                    result.append(line);
+                                }
+
+                                JSONObject jsonObject = null;
+                                try {
+                                    jsonObject = new JSONObject(result.toString());
+                                    String responses = jsonObject.getString("responses");
+                                    if(responses.equalsIgnoreCase("200")){
+                                        Toast.makeText(getApplicationContext(), "Login berhasil.", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "Login gagal.", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Response Code : " + response_code, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } finally {
+                            conn.disconnect();
+                        }
+                    } else {
+                        etPassword.setError("Masukkan password.");
+                        etPassword.requestFocus();
+                    }
+                } else {
+                    etEmail.setError("Masukkan email.");
+                    etEmail.requestFocus();
+                }
             }
         });
 
         tvDaftar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
     }
 }
