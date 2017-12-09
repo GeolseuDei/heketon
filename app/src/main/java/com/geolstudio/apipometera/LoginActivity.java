@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                         HttpURLConnection conn = null;
                         URL url = null;
                         try {
-                            url = new URL("http://192.168.100.16/heketon/login.php");
+                            url = new URL("http://103.52.146.34/heketon/login.php");
                         } catch (MalformedURLException e) {
                             e.printStackTrace();
                         }

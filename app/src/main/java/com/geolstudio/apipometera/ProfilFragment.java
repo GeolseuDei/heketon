@@ -98,7 +98,7 @@ public class ProfilFragment extends Fragment {
         HttpURLConnection conn = null;
         URL url = null;
         try {
-            url = new URL("http://192.168.100.16/heketon/request_apikey.php");
+            url = new URL("http://103.52.146.34/heketon/request_apikey.php");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -163,7 +163,7 @@ public class ProfilFragment extends Fragment {
         HttpURLConnection conn = null;
         URL url = null;
         try {
-            url = new URL("http://192.168.100.16/heketon/request_token_helio.php");
+            url = new URL("http://103.52.146.34/heketon/request_token_helio.php");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -228,7 +228,7 @@ public class ProfilFragment extends Fragment {
         HttpURLConnection conn = null;
         URL url = null;
         try {
-            url = new URL("http://192.168.100.16/heketon/request_kode_verif_email.php");
+            url = new URL("http://103.52.146.34/heketon/request_kode_verif_email.php");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -296,7 +296,7 @@ public class ProfilFragment extends Fragment {
                 + LoginActivity.user.getEmail()
                 + "\n\n" +
                 "Untuk memverifikasi email anda, klik tautan berikut :\n\n" +
-                "http://192.168.100.16/heketon/verifikasi_email.php?msg=" + kodeVerifEmail + "&iden=" + LoginActivity.user.getId() + "\n\n"+
+                "http://103.52.146.34/heketon/verifikasi_email.php?msg=" + kodeVerifEmail + "&iden=" + LoginActivity.user.getId() + "\n\n"+
                 "Priok Report,\nTim Kebut Semalam.";
         HttpURLConnection conn = null;
         URL url = null;
