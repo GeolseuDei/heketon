@@ -30,6 +30,8 @@ public class LoginActivity extends AppCompatActivity {
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int READ_TIMEOUT = 15000;
 
+    public static final User user = new User();
+
     EditText etEmail, etPassword;
     Button btnLogin;
     TextView tvDaftar;
@@ -101,6 +103,18 @@ public class LoginActivity extends AppCompatActivity {
                                     jsonObject = new JSONObject(result.toString());
                                     String responses = jsonObject.getString("responses");
                                     if(responses.equalsIgnoreCase("200")){
+                                        String id = jsonObject.getString("id");
+                                        String email = jsonObject.getString("email");
+                                        String nohp = jsonObject.getString("nohp");
+                                        String status_verif_hp = jsonObject.getString("status_verif_nohp");
+                                        String status_verif_email = jsonObject.getString("status_verif_email");
+
+                                        user.setId(id);
+                                        user.setEmail(email);
+                                        user.setNohp(nohp);
+                                        user.setStatus_verif_nohp(status_verif_hp);
+                                        user.setStatus_verif_email(status_verif_email);
+
                                         Toast.makeText(getApplicationContext(), "Login berhasil.", Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                     } else {

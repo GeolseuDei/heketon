@@ -9,16 +9,24 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="10dp">
-        <Button
+        <ImageButton
             android:id="@+id/btn_menu_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
-        <Button
+            android:layout_weight="1"
+            android:src="@drawable/container"
+            android:scaleType="fitCenter"
+            android:background="@color/pink"
+            android:layout_marginBottom="5dp"/>
+        <ImageButton
+            android:layout_marginTop="5dp"
             android:id="@+id/btn_menu_jadwalkedatangan"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:src="@drawable/jadwalkedatangan"
+            android:scaleType="fitCenter"
+            android:background="@color/pink" />
     </LinearLayout>
 
 </FrameLayout>

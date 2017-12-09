@@ -69,7 +69,7 @@ public class VerifyingActivity extends AppCompatActivity {
         HttpURLConnection conn = null;
         URL url = null;
         try {
-            url = new URL("http://192.168.100.16/heketon/verifikasi_hp_berhasil.php");
+            url = new URL("http://192.168.100.16/heketon/verifikasi_hp.php");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -115,7 +115,7 @@ public class VerifyingActivity extends AppCompatActivity {
                     String responses = jsonObject.getString("responses");
                     if(responses.equalsIgnoreCase("200")){
                         Toast.makeText(getApplicationContext(), "Verifikasi berhasil.", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     } else {
                         Toast.makeText(getApplicationContext(), "Verifikasi gagal.", Toast.LENGTH_SHORT).show();
                     }
