@@ -7,19 +7,33 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
+    AdapterViewPager adapterViewPager;
+    TabLayout tabLayout;
+    ViewPager viewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AdapterViewPager adapterViewPager = new AdapterViewPager(getSupportFragmentManager());
+        initValue();
+
+        setListener();
+
         adapterViewPager.addFragment(new MenuFragment());
         adapterViewPager.addFragment(new ProfilFragment());
 
-        final TabLayout tabLayout = findViewById(R.id.bottombar);
-        final ViewPager viewPager = findViewById(R.id.viewPagerMenu);
         viewPager.setAdapter(adapterViewPager);
+    }
 
+    public void initValue(){
+        adapterViewPager = new AdapterViewPager(getSupportFragmentManager());
+
+        tabLayout = findViewById(R.id.bottombar);
+        viewPager = findViewById(R.id.viewPagerMenu);
+    }
+
+    public void setListener(){
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -54,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     @Override

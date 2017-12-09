@@ -42,27 +42,25 @@ public class ProfilFragment extends Fragment {
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int READ_TIMEOUT = 15000;
 
+    StrictMode.ThreadPolicy policy;
+    TextView tvUserEmail, tvUserNoHP, tvUserStatusVerifHP, tvUserStatisVerifEmail;
+    Button btnEdit, btnVerifEmail;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profil, container, false);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        initValue(view);
+
+        setListener();
+
         StrictMode.setThreadPolicy(policy);
-
-        TextView tvUserEmail, tvUserNoHP, tvUserStatusVerifHP, tvUserStatisVerifEmail;
-        tvUserEmail = view.findViewById(R.id.tv_user_email);
-        tvUserNoHP = view.findViewById(R.id.tv_user_nohp);
-        tvUserStatusVerifHP = view.findViewById(R.id.tv_user_status_verif_hp);
-        tvUserStatisVerifEmail = view.findViewById(R.id.tv_user_status_verif_email);
-
-        final Button btnEdit, btnVerifEmail;
-        btnEdit = view.findViewById(R.id.btnEdit);
-        btnVerifEmail = view.findViewById(R.id.btnVerifikasiEmail);
 
         tvUserEmail.setText(LoginActivity.user.getEmail());
         tvUserNoHP.setText(LoginActivity.user.getNohp());
+
         if (LoginActivity.user.getStatus_verif_nohp().equalsIgnoreCase("0")) {
             tvUserStatusVerifHP.setText("Belum selesai");
         } else {
@@ -75,6 +73,21 @@ public class ProfilFragment extends Fragment {
             tvUserStatisVerifEmail.setText("Selesai");
         }
 
+        return view;
+    }
+
+    public void initValue(View view) {
+        policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        tvUserEmail = view.findViewById(R.id.tv_user_email);
+        tvUserNoHP = view.findViewById(R.id.tv_user_nohp);
+        tvUserStatusVerifHP = view.findViewById(R.id.tv_user_status_verif_hp);
+        tvUserStatisVerifEmail = view.findViewById(R.id.tv_user_status_verif_email);
+        btnEdit = view.findViewById(R.id.btnEdit);
+        btnVerifEmail = view.findViewById(R.id.btnVerifikasiEmail);
+    }
+
+    public void setListener() {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,8 +102,6 @@ public class ProfilFragment extends Fragment {
                 btnVerifEmail.setEnabled(false);
             }
         });
-
-        return view;
     }
 
     private String getPometeraAPIKey() {
@@ -296,7 +307,7 @@ public class ProfilFragment extends Fragment {
                 + LoginActivity.user.getEmail()
                 + "\n\n" +
                 "Untuk memverifikasi email anda, klik tautan berikut :\n\n" +
-                "http://103.52.146.34/heketon/verifikasi_email.php?msg=" + kodeVerifEmail + "&iden=" + LoginActivity.user.getId() + "\n\n"+
+                "http://103.52.146.34/heketon/verifikasi_email.php?msg=" + kodeVerifEmail + "&iden=" + LoginActivity.user.getId() + "\n\n" +
                 "Priok Report,\nTim Kebut Semalam.";
         HttpURLConnection conn = null;
         URL url = null;
@@ -349,7 +360,7 @@ public class ProfilFragment extends Fragment {
                 try {
                     jsonObject = new JSONObject(result.toString());
                     String code = jsonObject.getString("code");
-                    if(code.equalsIgnoreCase("200")){
+                    if (code.equalsIgnoreCase("200")) {
                         Toast.makeText(getContext(), "Email verifikasi berhasil dikirim.", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
