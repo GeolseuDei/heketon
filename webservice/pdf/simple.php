@@ -66,8 +66,6 @@
                     [5, "Finland", 7.413, "Helsinki"]
                 ];
 
-                alert("aduh");
-
                 var doc = new jsPDF();
                 doc.autoTable(columns, data);
                 var pdf = doc.output();

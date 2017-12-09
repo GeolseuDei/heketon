@@ -69,7 +69,7 @@ public class VerifyingActivity extends AppCompatActivity {
         HttpURLConnection conn = null;
         URL url = null;
         try {
-            url = new URL("http://192.168.100.16/heketon/verifikasi_hp.php");
+            url = new URL("http://103.52.146.34/heketon/verifikasi_hp.php");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

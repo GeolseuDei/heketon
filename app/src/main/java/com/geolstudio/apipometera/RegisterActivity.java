@@ -68,7 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         HttpURLConnection conn = null;
                                         URL url = null;
                                         try {
-                                            url = new URL("http://192.168.100.16/heketon/register.php");
+                                            url = new URL("http://103.52.146.34/heketon/register.php");
                                         } catch (MalformedURLException e) {
                                             e.printStackTrace();
                                         }
@@ -175,7 +175,7 @@ public class RegisterActivity extends AppCompatActivity {
         HttpURLConnection conn = null;
         URL url = null;
         try {
-            url = new URL("http://192.168.100.16/heketon/request_apikey.php");
+            url = new URL("http://103.52.146.34/heketon/request_apikey.php");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
