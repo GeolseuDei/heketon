@@ -1,127 +1,59 @@
 package com.geolstudio.apipometera;
 
-import android.net.Uri;
-import android.os.StrictMode;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
-
-    public static final int CONNECTION_TIMEOUT = 10000;
-    public static final int READ_TIMEOUT = 15000;
-    EditText to, subject, body;
-    TextView response, quota;
-    Button btnSend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        AdapterViewPager adapterViewPager = new AdapterViewPager(getSupportFragmentManager());
+        adapterViewPager.addFragment(new MenuFragment());
+        adapterViewPager.addFragment(new ProfilFragment());
 
-        initValue();
+        final TabLayout tabLayout = findViewById(R.id.bottombar);
+        final ViewPager viewPager = findViewById(R.id.viewPagerMenu);
+        viewPager.setAdapter(adapterViewPager);
 
-        setListener();
-    }
-
-    public void initValue() {
-
-        //MARK : konek ke UI
-        to = findViewById(R.id.to);
-        subject = findViewById(R.id.subject);
-        body = findViewById(R.id.body);
-
-        response = findViewById(R.id.response);
-        quota = findViewById(R.id.quota);
-
-        btnSend = findViewById(R.id.btnSend);
-    }
-
-    public void setListener() {
-        btnSend.setOnClickListener(new View.OnClickListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onClick(View view) {
-                HttpURLConnection conn = null;
-                URL url = null;
-                try {
-                    url = new URL("https://api.pometera.id/helio/compose");
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
 
-                try {
-                    conn = (HttpURLConnection) url.openConnection();
-                    conn.setReadTimeout(READ_TIMEOUT);
-                    conn.setConnectTimeout(CONNECTION_TIMEOUT);
-                    conn.setRequestMethod("POST");
-                    conn.setRequestProperty("X-Pometera-Api-Key", "a7c2925d-d40e-4651-853d-d43471d411a2");
-                    conn.setUseCaches(false);
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
 
-                    conn.setDoInput(true);
-                    conn.setDoOutput(true);
+            }
 
-                    Uri.Builder builder = new Uri.Builder()
-                            .appendQueryParameter("token", "KS-0IFyXWlKhVirZoXrBokBCAPE6MTUxMjczMTMzNjc1ODM3Mjg4Ng==")
-                            .appendQueryParameter("to", to.getText().toString().trim())
-                            .appendQueryParameter("subject", subject.getText().toString().trim())
-                            .appendQueryParameter("body", body.getText().toString().trim());
-                    String query = builder.build().getEncodedQuery();
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
 
-                    OutputStream os = conn.getOutputStream();
-                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-                    writer.write(query);
-                    writer.flush();
-                    writer.close();
-                    os.close();
-                    conn.connect();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    int response_code = conn.getResponseCode();
-
-                    if (response_code == HttpURLConnection.HTTP_OK) {
-
-                        InputStream input = conn.getInputStream();
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                        StringBuilder result = new StringBuilder();
-                        String line;
-
-                        while ((line = reader.readLine()) != null) {
-                            result.append(line);
-                        }
-
-                        response.setText(result);
-
-                        quota.setText(conn.getHeaderField("x-quota-remaining"));
-
-                    } else {
-                        response.setText(conn.getResponseCode());
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    conn.disconnect();
-                }
             }
         });
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                TabLayout.Tab tab = tabLayout.getTabAt(position);
+                tab.select();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
     }
 }
