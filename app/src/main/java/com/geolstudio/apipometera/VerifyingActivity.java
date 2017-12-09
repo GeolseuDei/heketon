@@ -33,28 +33,39 @@ public class VerifyingActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     EditText etVerifikasi;
     Button btnVerifikasi;
+    StrictMode.ThreadPolicy policy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verifying);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        initValue();
+
+        setListener();
+
         StrictMode.setThreadPolicy(policy);
 
-        sharedPreferences = getSharedPreferences(RegisterActivity.TAG_SHAREDPREFERENCES, MODE_PRIVATE);
         //Toast.makeText(getApplicationContext(), sharedPreferences.getString("kode_verifikasi", ""), Toast.LENGTH_LONG).show();
+    }
+
+    public void initValue() {
+        policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        sharedPreferences = getSharedPreferences(RegisterActivity.TAG_SHAREDPREFERENCES, MODE_PRIVATE);
 
         etVerifikasi = findViewById(R.id.et_verifikasi);
         btnVerifikasi = findViewById(R.id.btnVerifikasi);
+    }
 
+    public void setListener() {
         btnVerifikasi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (etVerifikasi.getText().length() != 6) {
                     Toast.makeText(getApplicationContext(), "Kode verifikasi berjumlah 6 digit.", Toast.LENGTH_SHORT).show();
                 } else {
-                    if(etVerifikasi.getText().toString().equals(sharedPreferences.getString("kode_verifikasi", ""))){
+                    if (etVerifikasi.getText().toString().equals(sharedPreferences.getString("kode_verifikasi", ""))) {
                         String id = RegisterActivity.idUser;
                         updateVerifikasiHP(id);
                     } else {
@@ -65,7 +76,7 @@ public class VerifyingActivity extends AppCompatActivity {
         });
     }
 
-    private void updateVerifikasiHP(String id){
+    private void updateVerifikasiHP(String id) {
         HttpURLConnection conn = null;
         URL url = null;
         try {
@@ -113,7 +124,7 @@ public class VerifyingActivity extends AppCompatActivity {
                 try {
                     jsonObject = new JSONObject(result.toString());
                     String responses = jsonObject.getString("responses");
-                    if(responses.equalsIgnoreCase("200")){
+                    if (responses.equalsIgnoreCase("200")) {
                         Toast.makeText(getApplicationContext(), "Verifikasi berhasil.", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     } else {

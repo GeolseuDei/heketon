@@ -39,23 +39,34 @@ public class RegisterActivity extends AppCompatActivity {
     public static String TAG_SHAREDPREFERENCES = "kebutsemalam";
     public static String idUser = "";
     SharedPreferences sharedPreferences;
+    StrictMode.ThreadPolicy policy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        initValue();
+
+        setListener();
+
+        StrictMode.setThreadPolicy(policy);
+
+    }
+
+    public void initValue(){
         sharedPreferences = getSharedPreferences(TAG_SHAREDPREFERENCES, MODE_PRIVATE);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         etEmail = findViewById(R.id.et_email_daftar);
         etPassword = findViewById(R.id.et_password_daftar);
         etRePassword = findViewById(R.id.et_repassword_daftar);
         etNoHP = findViewById(R.id.et_nohp_daftar);
         btnDaftar = findViewById(R.id.btnDaftar);
+    }
 
+    public void setListener(){
         btnDaftar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,7 +178,6 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private String getPometeraAPIKey() {

@@ -35,20 +35,32 @@ public class LoginActivity extends AppCompatActivity {
     EditText etEmail, etPassword;
     Button btnLogin;
     TextView tvDaftar;
+    StrictMode.ThreadPolicy policy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        initValue();
+
+        setListener();
+
         StrictMode.setThreadPolicy(policy);
+    }
+
+    public void initValue(){
+        policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         etEmail = findViewById(R.id.et_email_login);
         etPassword = findViewById(R.id.et_password_login);
         btnLogin = findViewById(R.id.btn_login);
         tvDaftar = findViewById(R.id.tv_daftar);
+    }
 
+    public void setListener(){
+
+        //MARK : onclick button login
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,6 +155,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        //MARK : onclick button tvdaftar
         tvDaftar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -20,15 +20,27 @@ public class MenuFragment extends Fragment {
         // Required empty public constructor
     }
 
+    ImageButton btnContainer, btnJadwalKedatangan;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_menu, container, false);
-        ImageButton btnContainer = view.findViewById(R.id.btn_menu_container);
-        ImageButton btnJadwalKedatangan = view.findViewById(R.id.btn_menu_jadwalkedatangan);
+        View view = inflater.inflate(R.layout.fragment_menu, container, false);
 
+        initValue(view);
+
+        setListener();
+
+        return view;
+    }
+
+    public void initValue(View view) {
+        btnContainer = view.findViewById(R.id.btn_menu_container);
+        btnJadwalKedatangan = view.findViewById(R.id.btn_menu_jadwalkedatangan);
+    }
+
+    public void setListener() {
         btnContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,7 +53,6 @@ public class MenuFragment extends Fragment {
 
             }
         });
-        return view;
     }
 
 }
