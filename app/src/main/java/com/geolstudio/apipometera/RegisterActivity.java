@@ -137,9 +137,11 @@ public class RegisterActivity extends AppCompatActivity {
                                                             editor.putString("kode_verifikasi", responses);
                                                             editor.apply();
 
-                                                            sendSMSNotif(etNoHP.getText().toString().trim(), responses);
-
-                                                            startActivity(new Intent(getApplicationContext(), VerifyingActivity.class));
+                                                            if(sendSMSNotif(etNoHP.getText().toString().trim(), responses)){
+                                                                startActivity(new Intent(getApplicationContext(), VerifyingActivity.class));
+                                                            } else {
+                                                                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                                                            }
                                                         }
                                                     }
                                                 } catch (JSONException e) {
@@ -313,7 +315,8 @@ public class RegisterActivity extends AppCompatActivity {
         return token;
     }
 
-    private void sendSMSNotif(String nohp, String kode_verif) {
+    private boolean sendSMSNotif(String nohp, String kode_verif) {
+        boolean status = false;
         String APIKey = getPometeraAPIKey();
         String token = requestSMSNotifToken();
         String smsContent = "Terima kasih sudah mendaftar di Priok Report.\nKode verifikasi anda adalah : " + kode_verif;
@@ -365,15 +368,18 @@ public class RegisterActivity extends AppCompatActivity {
                     result.append(line);
                 }
 
+                status = true;
 
             } else {
                 Toast.makeText(getApplicationContext(), "Response Code : " + response_code, Toast.LENGTH_SHORT).show();
             }
         } catch (IOException e) {
             e.printStackTrace();
+            status = false;
         } finally {
             conn.disconnect();
         }
+        return status;
     }
 
     @Override
