@@ -31,6 +31,8 @@ public class DetailPencarianKapalActivity extends AppCompatActivity {
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int READ_TIMEOUT = 15000;
 
+    public static ArrayList<DataKapalKedatangan> dataKapalKedatangans = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +50,7 @@ public class DetailPencarianKapalActivity extends AppCompatActivity {
         namakode = JadwalKapalActivity.namakode;
 
         RecyclerView recyclerView = findViewById(R.id.recycler_kapal);
-        ArrayList<DataKapalKedatangan> dataKapalKedatangans = new ArrayList<>(getDataKapal(tglmulai, tglselesai, namakode));
+        dataKapalKedatangans = new ArrayList<>(getDataKapal(tglmulai, tglselesai, namakode));
         AdapterRecyclerKapal adapterRecyclerKapal = new AdapterRecyclerKapal(getApplicationContext(), dataKapalKedatangans);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);

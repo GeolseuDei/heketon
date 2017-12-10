@@ -1,17 +1,10 @@
 package com.geolstudio.apipometera;
 
-
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -28,80 +21,22 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+public class KirimEmailDataKapalActivity extends AppCompatActivity {
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class ProfilFragment extends Fragment {
-
-
-    public ProfilFragment() {
-        // Required empty public constructor
-    }
-
-    public static final int CONNECTION_TIMEOUT = 10000;
-    public static final int READ_TIMEOUT = 15000;
-
-    StrictMode.ThreadPolicy policy;
-    TextView tvUserEmail, tvUserNoHP, tvUserStatusVerifHP, tvUserStatisVerifEmail;
-    Button btnEdit, btnVerifEmail;
+    public static int position = 0;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profil, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_kirim_pdf);
 
-        initValue(view);
-
-        setListener();
-
+        StrictMode.ThreadPolicy policy;
+        policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        tvUserEmail.setText(LoginActivity.user.getEmail());
-        tvUserNoHP.setText(LoginActivity.user.getNohp());
+        sendEmail();
 
-        if (LoginActivity.user.getStatus_verif_nohp().equalsIgnoreCase("0")) {
-            tvUserStatusVerifHP.setText("Belum selesai");
-        } else {
-            tvUserStatusVerifHP.setText("Selesai");
-        }
-        if (LoginActivity.user.getStatus_verif_email().equalsIgnoreCase("0")) {
-            tvUserStatisVerifEmail.setText("Belum selesai");
-            btnVerifEmail.setVisibility(View.VISIBLE);
-        } else {
-            tvUserStatisVerifEmail.setText("Selesai");
-        }
-
-        return view;
-    }
-
-    public void initValue(View view) {
-        policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-        tvUserEmail = view.findViewById(R.id.tv_user_email);
-        tvUserNoHP = view.findViewById(R.id.tv_user_nohp);
-        tvUserStatusVerifHP = view.findViewById(R.id.tv_user_status_verif_hp);
-        tvUserStatisVerifEmail = view.findViewById(R.id.tv_user_status_verif_email);
-        btnEdit = view.findViewById(R.id.btnEdit);
-        btnVerifEmail = view.findViewById(R.id.btnVerifikasiEmail);
-    }
-
-    public void setListener() {
-        btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        btnVerifEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendEmail();
-                btnVerifEmail.setEnabled(false);
-            }
-        });
+        onBackPressed();
     }
 
     private String getPometeraAPIKey() {
@@ -116,8 +51,6 @@ public class ProfilFragment extends Fragment {
 
         try {
             conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(READ_TIMEOUT);
-            conn.setConnectTimeout(CONNECTION_TIMEOUT);
             conn.setRequestMethod("POST");
             conn.setUseCaches(false);
 
@@ -159,7 +92,7 @@ public class ProfilFragment extends Fragment {
                 }
 
             } else {
-                Toast.makeText(getContext(), "Response Code : " + response_code, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Response Code : " + response_code, Toast.LENGTH_SHORT).show();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -181,8 +114,6 @@ public class ProfilFragment extends Fragment {
 
         try {
             conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(READ_TIMEOUT);
-            conn.setConnectTimeout(CONNECTION_TIMEOUT);
             conn.setRequestMethod("POST");
             conn.setUseCaches(false);
 
@@ -224,7 +155,7 @@ public class ProfilFragment extends Fragment {
                 }
 
             } else {
-                Toast.makeText(getContext(), "Response Code : " + response_code, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Response Code : " + response_code, Toast.LENGTH_SHORT).show();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -234,81 +165,19 @@ public class ProfilFragment extends Fragment {
         return token;
     }
 
-    private String getKodeVerifEmail() {
-        String kodeVerif = "";
-        HttpURLConnection conn = null;
-        URL url = null;
-        try {
-            url = new URL("http://103.52.146.34/heketon/request_kode_verif_email.php");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(READ_TIMEOUT);
-            conn.setConnectTimeout(CONNECTION_TIMEOUT);
-            conn.setRequestMethod("POST");
-            conn.setUseCaches(false);
-
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-
-            Uri.Builder builder = new Uri.Builder()
-                    .appendQueryParameter("id", LoginActivity.user.getId());
-            String query = builder.build().getEncodedQuery();
-
-            OutputStream os = conn.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-            writer.write(query);
-            writer.flush();
-            writer.close();
-            os.close();
-            conn.connect();
-
-            int response_code = conn.getResponseCode();
-
-            if (response_code == HttpURLConnection.HTTP_OK) {
-
-                InputStream input = conn.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                StringBuilder result = new StringBuilder();
-                String line;
-
-                while ((line = reader.readLine()) != null) {
-                    result.append(line);
-                }
-
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(result.toString());
-                    kodeVerif = jsonObject.getString("kode");
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            } else {
-                Toast.makeText(getContext(), "Response Code : " + response_code, Toast.LENGTH_SHORT).show();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            conn.disconnect();
-        }
-        return kodeVerif;
-    }
-
     private void sendEmail() {
         String apikey = getPometeraAPIKey();
-        String kodeVerifEmail = getKodeVerifEmail();
         String token = getHelioToken();
-        String body = "Hai,\n"
-                + LoginActivity.user.getEmail()
-                + "<br><br>" +
-                "Untuk memverifikasi email anda, klik tautan berikut :<br><br>" +
-                "http://103.52.146.34/heketon/verifikasi_email.php?msg=" + kodeVerifEmail + "&iden=" + LoginActivity.user.getId() + "<br><br>" +
-                "Priok Report,<br>Tim Kebut Semalam.";
+        String body =
+                "Vessel name : " + DetailPencarianKapalActivity.dataKapalKedatangans.get(position).getVessel_name() + "<br>" +
+                        "Shipping agent : " + DetailPencarianKapalActivity.dataKapalKedatangans.get(position).getShipping_agent() + "<br>" +
+                        "ETA : " + DetailPencarianKapalActivity.dataKapalKedatangans.get(position).getEta() + "<br>" +
+                        "ETD : " + DetailPencarianKapalActivity.dataKapalKedatangans.get(position).getEtd() + "<br>" +
+                        "Origin port : " + DetailPencarianKapalActivity.dataKapalKedatangans.get(position).getOrigin_port() + "<br>" +
+                        "Final port : " + DetailPencarianKapalActivity.dataKapalKedatangans.get(position).getFinal_port() + "<br>" +
+                        "Last port : " + DetailPencarianKapalActivity.dataKapalKedatangans.get(position).getLast_port() + "<br>" +
+                        "Next port : " + DetailPencarianKapalActivity.dataKapalKedatangans.get(position).getNext_port() + "<br>" +
+                        "Status : " + DetailPencarianKapalActivity.dataKapalKedatangans.get(position).getStatus();
         HttpURLConnection conn = null;
         URL url = null;
         try {
@@ -319,8 +188,6 @@ public class ProfilFragment extends Fragment {
 
         try {
             conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(READ_TIMEOUT);
-            conn.setConnectTimeout(CONNECTION_TIMEOUT);
             conn.setRequestMethod("POST");
             conn.setUseCaches(false);
             conn.setRequestProperty("X-Pometera-Api-Key", apikey);
@@ -331,7 +198,7 @@ public class ProfilFragment extends Fragment {
             Uri.Builder builder = new Uri.Builder()
                     .appendQueryParameter("token", token)
                     .appendQueryParameter("to", LoginActivity.user.getEmail())
-                    .appendQueryParameter("subject", "Verifikasi Email Priok Report")
+                    .appendQueryParameter("subject", "Data kapal yang anda pilih")
                     .appendQueryParameter("body", body);
             String query = builder.build().getEncodedQuery();
 
@@ -361,14 +228,14 @@ public class ProfilFragment extends Fragment {
                     jsonObject = new JSONObject(result.toString());
                     String code = jsonObject.getString("code");
                     if (code.equalsIgnoreCase("200")) {
-                        Toast.makeText(getContext(), "Email verifikasi berhasil dikirim.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Email data kapal berhasil dikirim.", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
             } else {
-                Toast.makeText(getContext(), "Response Code : " + response_code, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Response Code : " + response_code, Toast.LENGTH_SHORT).show();
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,10 +1,12 @@
 package com.geolstudio.apipometera;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -43,6 +45,14 @@ public class AdapterRecyclerKapal extends RecyclerView.Adapter<AdapterRecyclerKa
         holder.next_port.setText("Next Port : " + dataKapalKedatangans.get(position).getNext_port());
         holder.status.setText("Status : " + dataKapalKedatangans.get(position).getStatus());
 
+        holder.btnKirimPDF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                KirimEmailDataKapalActivity.position = position;
+                context.startActivity(new Intent(context, KirimEmailDataKapalActivity.class));
+            }
+        });
+
         //view
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +75,7 @@ public class AdapterRecyclerKapal extends RecyclerView.Adapter<AdapterRecyclerKa
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView vessel_name, shipping_agent, eta, etd, origin_port, final_port, last_port, next_port, status;
+        public Button btnKirimPDF;
         public View view;
 
         public ViewHolder(View itemView) {
@@ -79,6 +90,9 @@ public class AdapterRecyclerKapal extends RecyclerView.Adapter<AdapterRecyclerKa
             last_port = itemView.findViewById(R.id.txtlast);
             next_port = itemView.findViewById(R.id.txtnext);
             status = itemView.findViewById(R.id.txtStatus);
+
+            btnKirimPDF = itemView.findViewById(R.id.btnKirimPDF);
         }
     }
+
 }
