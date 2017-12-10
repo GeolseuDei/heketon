@@ -49,15 +49,13 @@
                 </tr>
             </tbody>
         </table>
-
-
     </body>
 </html>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
             function generate() {
-                var columns = ["ID", "Country", "Rank", "Capital"];
+                var columns = ["Shipping agent", "Country", "Rank", "Capital"];
                 var data = [
                     [1, "Denmark", 7.526, "Copenhagen"],
                     [2, "Switzerland", 7.509, "Bern"],
