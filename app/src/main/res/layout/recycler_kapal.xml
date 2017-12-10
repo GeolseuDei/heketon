@@ -50,17 +50,19 @@
 
         <TextView
             android:id="@+id/txteta"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="ETA" />
+            android:text="ETA : 04-12-2016 09:00"
+            android:autoSizeTextType="uniform"/>
 
         <TextView
             android:id="@+id/txtetd"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="ETD" />
+            android:text="ETD : 10-12-2016 20:00"
+            android:autoSizeTextType="uniform"/>
     </LinearLayout>
 
     <TextView
