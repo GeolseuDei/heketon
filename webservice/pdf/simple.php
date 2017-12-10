@@ -70,7 +70,7 @@
                 doc.autoTable(columns, data);
                 var pdf = doc.output();
 
-                $.post("./upload.php", {data: pdf})
+                $.post("./upload.php", {data: pdf, id: 1})
                         .done(function (data) {
                             alert("pengiriman data pdf berhasil " + data);
                         })
