@@ -26,7 +26,8 @@
         <activity android:name=".ContainerActivity" />
         <activity android:name=".JadwalKapalActivity" />
         <activity android:name=".DetailPencarianKapalActivity" />
-        <activity android:name=".KirimEmailDataKapalActivity"></activity>
+        <activity android:name=".KirimEmailDataKapalActivity" />
+        <activity android:name=".KirimEmailDataContainerActivity"></activity>
     </application>
 
 </manifest>
