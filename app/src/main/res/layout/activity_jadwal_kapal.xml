@@ -29,14 +29,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="date"
-            android:hint="Tanggal mulai"/>
+            android:hint="Tanggal mulai (yyyy-mm-dd)"/>
 
         <EditText
             android:id="@+id/et_tglSelesai"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="date"
-            android:hint="Tanggal selesai"/>
+            android:hint="Tanggal selesai (yyyy-mm-dd)"/>
 
         <EditText
             android:id="@+id/et_namakodekapal"

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -32,28 +33,15 @@ public class AdapterRecyclerKapal extends RecyclerView.Adapter<AdapterRecyclerKa
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-//        //image
-//        holder.imageFood.setImageResource(R.drawable.doenjang);
-//        holder.imageFood.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(context, "Image position : " + position, Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//        //name
-//        holder.tvFoodName.setText(foodList.get(position).getName());
-//
-//        //rating
-//        holder.ratingFood.setRating(foodList.get(position).getRating());
-//
-//        //button order
-//        holder.btnOrder.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(context, "Button position : " + position, Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        holder.vessel_name.setText(dataKapalKedatangans.get(position).getVessel_name());
+        holder.shipping_agent.setText(dataKapalKedatangans.get(position).getShipping_agent());
+        holder.eta.setText("ETA : " + dataKapalKedatangans.get(position).getEta());
+        holder.etd.setText("ETD : " + dataKapalKedatangans.get(position).getEtd());
+        holder.origin_port.setText("Origin Port : " + dataKapalKedatangans.get(position).getOrigin_port());
+        holder.final_port.setText("Final Port : " + dataKapalKedatangans.get(position).getFinal_port());
+        holder.last_port.setText("Last Port : " + dataKapalKedatangans.get(position).getLast_port());
+        holder.next_port.setText("Next Port : " + dataKapalKedatangans.get(position).getNext_port());
+        holder.status.setText("Status : " + dataKapalKedatangans.get(position).getStatus());
 
         //view
         holder.view.setOnClickListener(new View.OnClickListener() {
@@ -76,11 +64,21 @@ public class AdapterRecyclerKapal extends RecyclerView.Adapter<AdapterRecyclerKa
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        public TextView vessel_name, shipping_agent, eta, etd, origin_port, final_port, last_port, next_port, status;
         public View view;
 
         public ViewHolder(View itemView) {
             super(itemView);
             view = itemView;
+            vessel_name = itemView.findViewById(R.id.txtvesselname);
+            shipping_agent = itemView.findViewById(R.id.txtshippingagent);
+            eta = itemView.findViewById(R.id.txteta);
+            etd = itemView.findViewById(R.id.txtetd);
+            origin_port = itemView.findViewById(R.id.txtorigin);
+            final_port = itemView.findViewById(R.id.txtfinal);
+            last_port = itemView.findViewById(R.id.txtlast);
+            next_port = itemView.findViewById(R.id.txtnext);
+            status = itemView.findViewById(R.id.txtStatus);
         }
     }
 }

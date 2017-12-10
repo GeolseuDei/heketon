@@ -137,8 +137,6 @@ public class DetailPencarianKapalActivity extends AppCompatActivity {
 
         try {
             conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(READ_TIMEOUT);
-            conn.setConnectTimeout(CONNECTION_TIMEOUT);
             conn.setRequestMethod("POST");
             conn.setUseCaches(false);
             conn.setRequestProperty("X-Pometera-Api-Key", APIKey);
@@ -147,7 +145,12 @@ public class DetailPencarianKapalActivity extends AppCompatActivity {
             conn.setDoOutput(true);
 
             String query = "";
-            if (namakode.length() == 4) {
+            if (namakode.length() == 0) {
+                Uri.Builder builder = new Uri.Builder()
+                        .appendQueryParameter("start", tglmulai)
+                        .appendQueryParameter("end", tglselesai);
+                query = builder.build().getEncodedQuery();
+            } else if (namakode.length() == 4) {
                 Uri.Builder builder = new Uri.Builder()
                         .appendQueryParameter("start", tglmulai)
                         .appendQueryParameter("end", tglselesai)
@@ -188,16 +191,18 @@ public class DetailPencarianKapalActivity extends AppCompatActivity {
                 try {
                     jsonObject = new JSONObject(result.toString());
                     JSONArray jsonArray = jsonObject.getJSONArray("payload");
-                    String vessel_name = jsonArray.getJSONObject(0).getString("vessel_name");
-                    String shipping_agent = jsonArray.getJSONObject(0).getString("shipping_agent");
-                    String eta = jsonArray.getJSONObject(0).getString("eta");
-                    String etd = jsonArray.getJSONObject(0).getString("etd");
-                    String origin_port = jsonArray.getJSONObject(0).getString("origin_port");
-                    String final_port = jsonArray.getJSONObject(0).getString("final_port");
-                    String last_port = jsonArray.getJSONObject(0).getString("last_port");
-                    String next_port = jsonArray.getJSONObject(0).getString("next_port");
-                    String status = jsonArray.getJSONObject(0).getString("status");
-                    dataKapalKedatangans.add(new DataKapalKedatangan(vessel_name, shipping_agent, eta, etd, origin_port, final_port, last_port, next_port, status));
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        String vessel_name = jsonArray.getJSONObject(i).getString("vessel_name");
+                        String shipping_agent = jsonArray.getJSONObject(i).getString("shipping_agent");
+                        String eta = jsonArray.getJSONObject(i).getString("eta");
+                        String etd = jsonArray.getJSONObject(i).getString("etd");
+                        String origin_port = jsonArray.getJSONObject(i).getString("origin_port");
+                        String final_port = jsonArray.getJSONObject(i).getString("final_port");
+                        String last_port = jsonArray.getJSONObject(i).getString("last_port");
+                        String next_port = jsonArray.getJSONObject(i).getString("next_port");
+                        String status = jsonArray.getJSONObject(i).getString("status");
+                        dataKapalKedatangans.add(new DataKapalKedatangan(vessel_name, shipping_agent, eta, etd, origin_port, final_port, last_port, next_port, status));
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
