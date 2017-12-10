@@ -24,7 +24,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ContainerActivity" />
-        <activity android:name=".JadwalKapalActivity"></activity>
+        <activity android:name=".JadwalKapalActivity" />
+        <activity android:name=".DetailPencarianKapalActivity"></activity>
     </application>
 
 </manifest>

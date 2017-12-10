@@ -13,8 +13,9 @@ public class DataKapalKedatangan {
     private String final_port;
     private String last_port;
     private String next_port;
+    private String status;
 
-    public DataKapalKedatangan(String vessel_name, String shipping_agent, String eta, String etd, String origin_port, String final_port, String last_port, String next_port) {
+    public DataKapalKedatangan(String vessel_name, String shipping_agent, String eta, String etd, String origin_port, String final_port, String last_port, String next_port, String status) {
         this.vessel_name = vessel_name;
         this.shipping_agent = shipping_agent;
         this.eta = eta;
@@ -23,6 +24,15 @@ public class DataKapalKedatangan {
         this.final_port = final_port;
         this.last_port = last_port;
         this.next_port = next_port;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getVessel_name() {

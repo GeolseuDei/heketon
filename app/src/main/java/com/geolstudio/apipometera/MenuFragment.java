@@ -1,6 +1,7 @@
 package com.geolstudio.apipometera;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -44,13 +45,13 @@ public class MenuFragment extends Fragment {
         btnContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(getContext(), ContainerActivity.class));
             }
         });
         btnJadwalKedatangan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(getContext(), JadwalKapalActivity.class));
             }
         });
     }
