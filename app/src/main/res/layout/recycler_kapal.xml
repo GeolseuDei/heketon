@@ -135,4 +135,17 @@
         android:textColor="@color/white"
         android:textStyle="italic"/>
 
+<<<<<<< HEAD
+=======
+    <Button
+        android:id="@+id/button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtStatus"
+        android:background="@color/colorAccent"/>
+>>>>>>> e6183fd7bf3e851fa534c18d8306ae4e7ef8579a
 </android.support.constraint.ConstraintLayout>
